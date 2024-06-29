@@ -1,5 +1,7 @@
 'use strict';
 
+const s2 = window.location.href.includes('s2') ? '/s2' : '';
+
 // Data classes
 class Track {
     constructor(code, rjCode, cvs, tags, series, engName, japName, thumbnail, images, audios, otherLinks) {
@@ -36,12 +38,12 @@ class Track {
         gridItem.classList.add('grid-item');
         gridItem.id = `link_to_${this.code}`;
         gridItem.innerHTML = `<div class="image-container">
-            <a href="/watch?code=${this.code}">
+            <a href="${s2}/watch?code=${this.code}">
                 <img loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
             </a>
         </div>
         <div class="flex-container">
-            <a href="/watch?code=${this.code}">
+            <a href="${s2}/watch?code=${this.code}">
                 <div class="text-container">
                     <p class="multiline-ellipsis">
                         <b><i>${this.rjCode}</i></b> - <span>${this.engName}</span>
@@ -50,7 +52,7 @@ class Track {
             </a>
             <div class="text-container">
                 <p class="singleline-ellipsis"><br>
-                    <b>CV</b>: ${Track.getListOfCategoryHtml(this.cvs, Database.categoryType.CV)}
+                    <b>CV</b>: ${Track.getListOfCategoryHtmlLink(this.cvs, Database.categoryType.CV)}
                 </p>
             </div>
         </div>`;
@@ -62,7 +64,7 @@ class Track {
         const item = document.createElement('a');
 
         item.dataset.code = this.code;
-        item.href = `../watch?code=${this.code}`;
+        item.href = `..${s2}/watch?code=${this.code}`;
         item.innerHTML = `<div class="imgcontainer image-container">
             <img loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
         </div>
@@ -107,6 +109,10 @@ class Track {
     static getListOfCategoryHtml(keys, type) {
         return keys.map(key => Database.getCategory(type, key).getHtml()).join(', ');
     }
+  
+    static getListOfCategoryHtmlLink(keys, type) {
+        return keys.map(key => Database.getCategory(type, key).getHtmlLink()).join(', ');
+    }
 }
 class Category {
     constructor(name, quantity) {
@@ -122,7 +128,7 @@ class Cv extends Category {
         return `<span class="cv">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="../?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="..${s2}/?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Tag extends Category {
@@ -134,7 +140,7 @@ class Tag extends Category {
         return `<span class="tag">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="../?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="..${s2}/?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Series extends Category {
@@ -146,7 +152,7 @@ class Series extends Category {
         return `<span class="series">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="../?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="..${s2}/?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class SearchResult {
@@ -158,7 +164,7 @@ class SearchResult {
         const value = Utils.highlight(this.value, this.keyword);
         const href = ['cv', 'tag', 'series'].includes(this.type)
                       ? `..?${this.type}=${encodeURIComponent(this.value)}` 
-                      : `../watch?code=${this.code}`;
+                      : `..${s2}/watch?code=${this.code}`;
         return `<a href="${href}">
             <i class="fas fa-search"></i>&nbsp;
             <strong>${Utils.convertToTitleCase(this.type)}</strong>:

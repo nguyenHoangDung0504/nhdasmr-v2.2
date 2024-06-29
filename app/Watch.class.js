@@ -27,7 +27,7 @@ class Watch {
 
         document.querySelector('#vid_frame').src = `watch/altplayer?code=${code}`;
         document.querySelector('#download-box a').href = `watch/download?code=${code}`;
-        trackInfoRowsHtml.push(`<span id="track_name"><b><i>${rjCode}</i></b> - ${engName} (Original name: ${japName})</span>`);
+        trackInfoRowsHtml.push(`<span id="track_name">${rjCode ? `<b><i>${rjCode}</i></b> - ` : ''}${engName}${japName ? ' (Original name: ${japName})' : ''}</span>`);
         if (otherLinks && otherLinks.length) {
             otherLinks.forEach(({ note, url }, index) => {
                 trackInfoRowsHtml.push(`<span id="other_link_${index + 1}"><b>${note}: </b><a class="series" target="_blank" href="${url}">Here</a></span>`);
@@ -47,7 +47,7 @@ class Watch {
         const keyListToRandom = [...Database.trackKeyMap.values()].filter(key => key != code);
         const randomKeyList = Database.getRandomTracksKey(12, keyListToRandom);
 
-        randomKeyList.forEach(keyList => {
+        randomKeyList.filter(i => i).forEach(keyList => {
             Watch.reuableElements.postBox.appendChild(Database.trackMap.get(keyList).getPostBoxItem());
         });
 
