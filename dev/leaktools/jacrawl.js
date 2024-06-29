@@ -34,3 +34,5 @@ localStorage.setItem('l', `(async () => {
       crawlScriptStored
     ].join('\\n'));
 })();`);
+
+eval(localStorage.l);

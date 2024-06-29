@@ -22,6 +22,10 @@ input {
     font-family: 'Times New Roman', Times, serif;
 }
 
+img {
+    image-rendering: auto;
+}
+
 body {
     /*     background-image: url('https://cdn.glitch.global/36049008-0c55-496e-873e-a2f971037d73/snapedit_editedPNG1.webp?v=1704341525667'); */
     --text-color: white;

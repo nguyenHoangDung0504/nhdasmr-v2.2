@@ -42,12 +42,12 @@ class Home {
                 Database.sortByUploadOrder(true);
                 Home.keyList = Database.keyList;
             } else {
-                const searchValues = Home.search.split(',').map(v => v.trim()).filter(v => v);
+                const searchValues = Home.search.split('+').map(v => v.trim()).filter(v => v);
                 searchValues.forEach(searchValue => {
                     Home.keyList = Database.searchTracksKey(searchValue, Home.keyList);
                 });
                 const resultCount = Home.keyList.length;
-                Home.setMessage(`Search result for keyword${resultCount > 0 ? 's' : ''}: <b><i>"${searchValues.join(', ')}"</i></b> (${resultCount})`);
+                Home.setMessage(`Search result for keyword${resultCount > 0 ? 's' : ''}: <b><i>${searchValues.map(value => `"${value}"`).join(', ')}</i></b> (${resultCount})`);
             }
         }
         // CV, tag, series handling

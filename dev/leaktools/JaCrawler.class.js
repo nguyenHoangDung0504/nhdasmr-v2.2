@@ -9,21 +9,26 @@ class JaCrawler {
         const tagKeys = new Map([
             ['Student', 'School Girl'],
             ['Imouto', 'Younger Sister'],
-            ['Breast Sex', 'Paizuri']
+            ['Oneesan', 'Elder Sister'],
+            ['Breast Sex', 'Paizuri'],
+            ['Trap', 'Crossdress']
         ]);
         const blockTags = ['licking'];
         const cvKeys = new Map([
+            ['Momoka Yuzuki', 'MOMOKA']
             ['Aruha Kotone', 'Kotone Akatsuki']
         ]);
         const ps = document.querySelectorAll('p');
         
+        const japName = ps[1].textContent.trim();
+        const engName = JaCrawler.filterEngName(document.querySelector('h1.page-title').textContent);
         const rjCode = ps[3].textContent.split(': ')[1];
         
         const cvs = ps[2].textContent.split(': ')[1].split(',').map(cv => {
             const rs = cv.trim();
             if(!rs)
                 return null;
-            const testRs = cvKeys.get(rs) || Database.getCategory(Database.categoryType.CV, rs.split(' ').reverse().join(' '));
+            const testRs = cvKeys.get(rs) || Database.getCategory(Database.categoryType.CV, rs.split(' ').reverse().join(' '))?.name;
             return testRs || rs;
         }).filter((cv, index, array) => {
             if(!cv) return false;
@@ -57,8 +62,8 @@ class JaCrawler {
             return array.indexOf(tag) === index;
         }).sort().join(',');
 
-        console.log({ code, rjCode, cvs, tags });
-        return({ code, rjCode, cvs, tags });
+        console.log({ code, rjCode, cvs, tags, engName, japName });
+        JaCrawler.copy(`at(${code}, "${rjCode}", "${cvs}", "${tags}", "sEries", "${engName}", "${japName}", t0i0a);`);
     }
   
     static async copy(value, timeout = 100) {
@@ -74,7 +79,13 @@ class JaCrawler {
               console.log('copied');
               resolve('copied');
             }, timeout)
-        });        
+        });
+    }
+  
+    static filterEngName(input) {
+        let alphabeticCount = input.replace(/[^a-zA-Z]/g, "").length;
+        let percentageAlphabetic = (alphabeticCount / input.length) * 100;
+        return percentageAlphabetic > 60 ? input : 'engName';
     }
 }
 

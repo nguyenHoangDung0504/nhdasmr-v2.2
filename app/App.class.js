@@ -60,7 +60,7 @@ class App {
             }
         }
         function search(value) {
-            const splittedValue = value.split(',').map(v => v.trim()).filter(v => v);
+            const splittedValue = value.split('+').map(v => v.trim()).filter(v => v);
 
             if (value == '') {
                 resultBox.innerHTML = '';
@@ -71,8 +71,8 @@ class App {
             if (value.includes('@')) {
                 resultBox.innerHTML = /*html*/`
                     <a href="../?search=@n"><span style="color: #00BFFF;">►</span><strong>@n</strong>: <span class="cnt">View newest tracks</span></a>
-                    <a href="../develop/list-code"><span style="color: #00BFFF;">►</span><strong>@lc or @listcode</strong>: <span class="cnt">View list code</span></a>
-                    <a href="../develop/data-capacity"><span style="color: #00BFFF;">►</span><strong>@dc or @datacapacity</strong>: <span class="cnt">View data capacity</span></a>
+                    <a href="../dev/list-code"><span style="color: #00BFFF;">►</span><strong>@lc or @listcode</strong>: <span class="cnt">View list code</span></a>
+                    <a href="../dev/data-capacity"><span style="color: #00BFFF;">►</span><strong>@dc or @datacapacity</strong>: <span class="cnt">View data capacity</span></a>
                     <a href="https://japaneseasmr.com/"><span style="color: #00BFFF;">►</span><strong>@ja</strong>: <span class="cnt">Japanese ASMR</span></a>
                     <a href="https://www.asmr.one/works"><span style="color: #00BFFF;">►</span><strong>@ao</strong>: <span class="cnt">ASMR ONE</span></a>
                 `;
@@ -100,7 +100,7 @@ class App {
 
             const options = ['lc', 'listcode', 'dc', 'datacapacity', 'ja', 'ao']
             const links = [
-                '../develop/list-code', '../develop/list-code', '../develop/data-capacity', '../develop/data-capacity',
+                '../dev/list-code', '../dev/list-code', '../dev/data-capacity', '../dev/data-capacity',
                 'https://japaneseasmr.com/', 'https://www.asmr.one/works'
             ]
             const optionBeforeSplit = value
