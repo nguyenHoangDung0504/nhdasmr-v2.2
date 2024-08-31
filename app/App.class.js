@@ -17,6 +17,10 @@ class App {
         App.buildMenuAction();
         App.buildCategoriesModalView();
         App.buildCategoriesModalAction();
+        App.buildGachaModalAction();
+        document.querySelector('.back-item').addEventListener('click', () => window.history.back());
+        document.querySelector('.reload-item').addEventListener('click', () => window.location.reload());
+        document.querySelector('.forward-item').addEventListener('click', () => window.history.forward());
 
         switch (type) {
             case App.types.HOME: Home.build(); break;
@@ -59,6 +63,7 @@ class App {
                 }
             }
         }
+      
         function search(value) {
             const splittedValue = value.split('+').map(v => v.trim()).filter(v => v);
 
@@ -93,6 +98,7 @@ class App {
             }
             Config.showResultBox();
         }
+      
         function developerSearch(value) {
             let active = false;
             if (value.indexOf('@') == -1)
@@ -167,6 +173,9 @@ class App {
                     panel.style.maxHeight = panel.scrollHeight + 'px';
                 }
             });
+            if(!Config.deviceIsMobile()) {
+                setTimeout(() => accordion.dispatchEvent(new Event('click')), 200);
+            }
         });
         subRankList.forEach(subRankBox => {
             const searchBox = subRankBox.querySelector('input.search');
@@ -228,9 +237,124 @@ class App {
             categoriesModal.classList.add('open');
             document.body.classList.add('openModal');
         }
+      
         function closeCatgoriesModal() {
             categoriesModal.classList.remove('open');
             document.body.classList.remove('openModal');
+        }
+    }
+  
+    // For gacha modal
+    static buildGachaModalAction() {
+        const gachaModal = document.querySelector('#gacha-modal');
+        const gridGachaModal = gachaModal.querySelector('.gacha-grid-container');
+        const btnOpenGachaModal = document.querySelector('#open-gacha-modal-btn');
+        const btnCloseGachaModal = gachaModal.querySelector('#close-gacha-modal-btn');
+        const gacha1 = gachaModal.querySelector('#gachaX1');
+        const gacha10 = gachaModal.querySelector('#gachaX10');
+      
+        gridGachaModal.innerHTML = ''; // Reset HTML
+        btnOpenGachaModal.addEventListener('click', openGachaModal);
+        btnCloseGachaModal.addEventListener('click', closeGachaModal);
+        gachaModal.addEventListener('click', event => {
+            if(event.target.classList.contains('modal-container')) {
+                closeGachaModal();
+            }
+        });
+
+        function openGachaModal() {
+            gachaModal.classList.add('open');
+            document.body.classList.add('openModal');
+        }
+        function closeGachaModal() {
+            gachaModal.classList.remove('open');
+            document.body.classList.remove('openModal');
+        }
+
+        let onG10Anim = false;
+        gacha10.addEventListener('click', () => {
+            if(onG10Anim) return;
+
+            gacha10.classList.add('active');
+            onG10Anim = true;
+            gacha10.addEventListener('transitionend', function() {
+                setTimeout(() => {
+                    this.classList.remove('active');
+                    this.style.setProperty('--transition-time', '.15s');
+                    this.addEventListener('transitionend', () => {
+                        this.style.setProperty('--transition-time', null);
+                        onG10Anim = false;
+                    }, { once: true });
+                }, 100);
+            }, { once: true });
+
+            const shards = document.querySelectorAll('.shard');
+            const screenWidth = screen.width;
+            const screenHeight = screen.height;
+            const avgDimension = (screenWidth + screenHeight) / 2;
+            const usedPositions = []; // Mảng lưu trữ các vị trí đã dùng
+
+            shards.forEach((shard) => {
+                let xTranslate, yTranslate, distance;
+                shard.opacity = 1;
+
+                // Xác định vị trí sao cho không bị trùng hoặc quá gần các mảnh khác
+                do {
+                    xTranslate = (Math.random() - 0.5) * (avgDimension * 0.2); // Khoảng cách bay 20% của avgDimension
+                    yTranslate = (Math.random() - 0.5) * (avgDimension * 0.2); // Khoảng cách bay 20% của avgDimension
+
+                    // Tính khoảng cách từ vị trí (xTranslate, yTranslate) đến các vị trí đã sử dụng
+                    distance = usedPositions.every(pos => {
+                        const dx = xTranslate - pos.x;
+                        const dy = yTranslate - pos.y;
+                        return Math.sqrt(dx * dx + dy * dy) > avgDimension * 0.05; // Đảm bảo khoảng cách tối thiểu là 5% của avgDimension
+                    });
+                } while (!distance);
+
+                // Lưu vị trí này vào mảng usedPositions
+                usedPositions.push({ x: xTranslate, y: yTranslate });
+
+                // Kích thước của mỗi shard (tỉ lệ theo avgDimension)
+                shard.style.width = `${avgDimension * 0.015}px`; // 1.5% của avgDimension
+                shard.style.height = `${avgDimension * 0.015}px`; // 1.5% của avgDimension
+
+                // Thời gian bay của mỗi shard
+                let duration = 800;
+
+                // Tạo animation với animate()
+                shard.animate([
+                    { transform: 'translate(0, 0)', filter: 'brightness(1.5)', opacity: 1 },
+                    { transform: `translate(${xTranslate}px, ${yTranslate}px) rotate(${180}deg)`, filter: 'brightness(1.5)', opacity: 1 },
+                    { transform: `translate(${xTranslate}px, ${yTranslate + Math.abs(yTranslate/2)}px) rotate(${270}deg)`, filter: 'brightness(1.0)', opacity: 1 },
+                    { transform: `translate(${xTranslate}px, ${yTranslate + Math.abs(yTranslate)}px) rotate(${360}deg)`, opacity: 0 }
+                ], {
+                    duration: duration,
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+            });
+        });
+      
+        gacha10.addEventListener('click', function() { gacha(this.dataset.count) });
+        gacha1.addEventListener('click', function() { gacha(this.dataset.count) });
+      
+        function gacha(count) {
+            const trackKeys = Database.getRandomTracksKey(count);
+          
+            gridGachaModal.innerHTML = ''; // Reset HTML
+            gachaModal.querySelector('.gacha-modal-body').scrollTop = 0;
+            trackKeys.forEach((key, index) => {
+                const track = Database.trackMap.get(key);
+                const element = track.getGridItemElement();
+                gridGachaModal.appendChild(element);
+                
+                track.addActionDisplayHiddenItemFor(element.querySelector('.image-container'));
+                console.log(element.querySelector('.image-container'));
+                element.style.opacity = "0";
+                setTimeout(()=>{
+                    element.style.opacity = "1";
+                }, (index + 1) * 100);
+            });
         }
     }
 

@@ -163,7 +163,7 @@
         font-size: 15px;
     }
 
-    .model-container .model-body .model-content {
+    .gacha-modal-body {
         height: 86%;
         padding: 4px 2px;
         margin: 0 5px;
@@ -171,13 +171,13 @@
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-    .model-container .model-body .model-content .grid-container {
+    .gacha-modal-body .gacha-grid-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-row-gap: 4px;
         grid-column-gap: 2px;
     }
 
-    .model-container .model-body .model-content .grid-container .grid-item {
+    .gacha-modal-body .gacha-grid-container .grid-item {
         border-radius: 4px;
         padding: 4px 4px;
         max-width: 100%;
@@ -185,15 +185,16 @@
         max-height: 185px;
     }
 
-    .model-container .model-body .model-content .grid-container .grid-item .flex-container .text-container {
+    .gacha-modal-body .gacha-grid-container .grid-item .flex-container .text-container {
         margin-top: 10px;
         font-size: 10px;
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-    .model-container .model-body .model-footer {
+    .modal-footer {
         height: 7%;
         padding: 4px;
+        justify-content: space-between;
     }
 
     .model-container .model-body .model-footer .model-btn {
@@ -215,6 +216,29 @@
         top: 24px;
         right: 25px;
     }
+  
+    /*NÚT GACHA*/
+        .special-button {
+            padding: 17px 65px;
+            font-size: 12px;
+        }
+
+        .sub-special-button::before {
+            right: -2px;
+        }
+
+        .sub-special-button.left::before {
+            left: -2px;
+        }
+
+        .sub-special-button::after {
+            right: -4px;
+        }
+
+        .sub-special-button.left::after {
+            left: -4px;
+        }
+    /*END NÚT GACHA*/
 
     /*END MODEL*/
 
@@ -832,7 +856,7 @@
         font-size: 13px;
     }
 
-    .model-container .model-body .model-content {
+    .gacha-modal-body {
         height: 80%;
         padding: 4px 2px;
         margin: 0 5px;
@@ -840,13 +864,13 @@
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-    .model-container .model-body .model-content .grid-container {
+    .gacha-modal-body .gacha-grid-container {
         grid-template-columns: repeat(5, minmax(0, 1fr));
         grid-row-gap: 4px;
         grid-column-gap: 2px;
     }
 
-    .model-container .model-body .model-content .grid-container .grid-item {
+    .gacha-modal-body .gacha-grid-container .grid-item {
         border-radius: 4px;
         padding: 4px 4px;
         max-width: 100%;
@@ -854,15 +878,16 @@
         max-height: 160px;
     }
 
-    .model-container .model-body .model-content .grid-container .grid-item .flex-container .text-container {
+    .gacha-modal-body .gacha-grid-container .grid-item .flex-container .text-container {
         margin-top: 5px;
         font-size: 8px;
     }
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-    .model-container .model-body .model-footer {
+    .modal-footer {
         height: 10%;
         padding: 7px;
+        justify-content: space-between;
     }
 
     .model-container .model-body .model-footer .model-btn {
@@ -884,6 +909,29 @@
         top: 6.5px;
         right: 37px;
     }
+  
+        /*NÚT GACHA*/
+            .special-button {
+                padding: 17px 65px;
+                font-size: 12px;
+            }
+
+            .sub-special-button::before {
+                right: -2px;
+            }
+
+            .sub-special-button.left::before {
+                left: -2px;
+            }
+
+            .sub-special-button::after {
+                right: -4px;
+            }
+
+            .sub-special-button.left::after {
+                left: -4px;
+            }
+        /*END NÚT GACHA*/
 
     /*END MODEL*/
 
