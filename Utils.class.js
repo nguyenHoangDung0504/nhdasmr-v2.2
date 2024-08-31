@@ -133,7 +133,8 @@ class Utils {
     static memoizeGetAndSearchMethods(...targets) {
         targets.forEach(target => {
             const methodNames = Object.getOwnPropertyNames(target).filter(name => 
-                ['get', 'search'].some(keyword => name.includes(keyword))
+                !name.includes('Random')
+                && ['get', 'search'].some(keyword => name.includes(keyword))
                 && (typeof target[name]) === 'function'
             );
             methodNames.forEach(methodName => {

@@ -24,10 +24,24 @@ class Watch {
         const { code, rjCode, cvs, tags, series, engName, japName, otherLinks } = Watch.track;
         const trackInfoContainer = document.querySelector('#track-info');
         const trackInfoRowsHtml = [];
-
-        document.querySelector('#vid_frame').src = `watch/altplayer?code=${code}`;
+        const vidFrame = document.querySelector('#vid_frame')
+        
+        vidFrame.src = `watch/altplayer?code=${code}`;
+        vidFrame.addEventListener('focus', function() {
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+        });
+        vidFrame.addEventListener('blur', function() {
+            document.removeEventListener('touchmove', preventScroll);
+        });
+        function preventScroll(e) {
+          e.preventDefault();
+        }
+      
         document.querySelector('#download-box a').href = `watch/download?code=${code}`;
-        trackInfoRowsHtml.push(`<span id="track_name">${rjCode ? `<b><i>${rjCode}</i></b> - ` : ''}${engName}${japName ? ' (Original name: ${japName})' : ''}</span>`);
+        trackInfoRowsHtml.push(`
+            <span id="track_name">${rjCode ? `<b>Search code: </b>${rjCode}` : ''}
+            ${japName ? `<br><br><b>Original name</b>: ${japName}` : ''}</span>
+            <br><br><b>Translated name</b>: ${engName}`);
         if (otherLinks && otherLinks.length) {
             otherLinks.forEach(({ note, url }, index) => {
                 trackInfoRowsHtml.push(`<span id="other_link_${index + 1}"><b>${note}: </b><a class="series" target="_blank" href="${url}">Here</a></span>`);

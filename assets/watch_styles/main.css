@@ -102,6 +102,10 @@
     /*   background-color: var(--bg2) */
 }
 
+#track_list_tag {
+/*     line-height: 1.5; */
+}
+
 .container .content_div div.post-box a .imgcontainer {
     display: block;
     position: relative;

@@ -135,6 +135,11 @@ input[type="text"]::selection {
     text-decoration: underline;
 }
 
+#hidden-info-box {
+    position: fixed;
+    z-index: 100000000;
+}
+
 /*HEADER*/
 .header {
     transition: var(--time);
@@ -172,10 +177,11 @@ input[type="text"]::selection {
     position: fixed;
     z-index: 99999;
     user-select: none;
-    background: linear-gradient(0deg, var(--special-color), var(--special-color), deeppink, deeppink);
+  color: white;
+/*     background: linear-gradient(0deg, var(--special-color), var(--special-color), deeppink, deeppink);
     background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
 }
 
 .header .title-div {
@@ -429,7 +435,7 @@ body.openMenu>.menu {
     border-radius: 10px;
     width: 650px;
     height: auto;
-    z-index: 99998;
+    z-index: 99999999999;
     pointer-events: none;
 }
 
@@ -444,7 +450,12 @@ body.openMenu>.menu {
 .hidden-info .content-container {
     width: 50%;
     height: fit-content;
+    line-height: 1.5;
     /*   border: 1px solid white; */
+}
+
+.hidden-info .content-container h3 {
+  line-height: 1.5;
 }
 
 .hidden-info .image-container img {
@@ -639,7 +650,7 @@ body:not(.openMenu) .content .grid-container .grid-item .flex-container .text-co
     left: 0;
     width: 100%;
     height: 100dvh;
-    z-index: 999999999;
+    z-index: 99;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -673,17 +684,18 @@ body.openModel>.model-container {
     font-size: 25px;
 }
 
-.model-container .model-body .model-content {
+/*-----------------------------------------------------------------------------------------------------------------------------------------*/
+.gacha-modal-body {
     display: grid;
     height: 80%;
-    padding: 5px 10px;
+    padding: 5px 90px;
     background-color: var(--big-bg);
-    margin: 0 75px;
+    margin: 0 50px;
     overflow-y: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 5px deeppink, 0 0 10px gold;
 }
-
-/*-----------------------------------------------------------------------------------------------------------------------------------------*/
-.model-container .model-body .model-content .grid-container {
+.gacha-modal-body .gacha-grid-container {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     /* Tạo 3 cột có chiều rộng tỷ lệ tương đương */
@@ -692,10 +704,10 @@ body.openModel>.model-container {
     grid-column-gap: 4px;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item {
+.gacha-modal-body .gacha-grid-container .grid-item {
     transition: var(--time);
     display: flex;
-    opacity: 0;
+/*     opacity: 0; */
     color: var(--text-color);
     border-radius: 5px;
     background-color: var(--bg);
@@ -708,23 +720,7 @@ body.openModel>.model-container {
     max-height: 280px;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .info-button {
-    display: none;
-    position: absolute;
-    right: 3px;
-    top: 3px;
-    border-radius: 50%;
-    font-weight: 900;
-    font-style: italic;
-    font-size: 20px;
-    padding: 4px 14px;
-    background-color: black;
-    color: white;
-    user-select: none;
-    cursor: help;
-}
-
-.model-container .model-body .model-content .grid-container .grid-item .image-container {
+.gacha-modal-body .gacha-grid-container .grid-item .image-container {
     width: 100%;
     aspect-ratio: 4 / 3;
     position: relative;
@@ -732,7 +728,7 @@ body.openModel>.model-container {
     border-radius: 4px;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .image-container img {
+.gacha-modal-body .gacha-grid-container .grid-item .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -741,20 +737,20 @@ body.openModel>.model-container {
     left: 0;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .flex-container {
+.gacha-modal-body .gacha-grid-container .grid-item .flex-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .flex-container .text-container {
+.gacha-modal-body .gacha-grid-container .grid-item .flex-container .text-container {
     width: 100%;
     margin-top: 15px;
     font-size: 14px;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .flex-container .text-container .multiline-ellipsis {
+.gacha-modal-body .gacha-grid-container .grid-item .flex-container .text-container .multiline-ellipsis {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     /* Số dòng tối đa trước khi cắt ngắn */
@@ -763,14 +759,14 @@ body.openModel>.model-container {
     text-overflow: ellipsis;
 }
 
-.model-container .model-body .model-content .grid-container .grid-item .flex-container .text-container .singleline-ellipsis {
+.gacha-modal-body .gacha-grid-container .grid-item .flex-container .text-container .singleline-ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-.model-container .model-body .model-footer {
+.modal-footer {
     display: flex;
     height: 10%;
     padding: 10px;
@@ -778,65 +774,152 @@ body.openModel>.model-container {
     justify-content: space-around;
 }
 
-.model-container .model-body .model-footer .model-btn {
-    display: block;
-    padding: 8px 70px;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: var(--text-color);
-    color: var(--bg2);
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.model-container .model-body .model-footer .model-btn.x10btn {
-    border: 2px solid;
-    border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    border-image-slice: 1;
-    border-radius: 0;
-}
-
-/* @keyframes rainbow-wheel{
-  0% {border-image-slice: 1; border-image-source: linear-gradient(to right, red, green, blue, purple);}
-  25% {border-image-slice: 1; border-image-source: linear-gradient(to bottom, purple, red, green, blue);}
-  50% {border-image-slice: 1; border-image-source: linear-gradient(to left, blue, purple, red, green);}
-  75% {border-image-slice: 1; border-image-source: linear-gradient(to top, green, blue, purple, red);}
-  100% {border-image-slice: 1; border-image-source: linear-gradient(to right, red, green, blue, purple);}
-}
-.model-container .model-body .model-footer .model-btn.x10btn {
-  position: relative;
-  border-radius: 0 !important;
-  border: 5px solid transparent;
-  animation: rainbow-wheel 4s infinite;
-} */
-.model-container .model-body .model-footer .model-btn.x50btn {
-    border: 4px solid;
-    border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    /*   background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); */
-    border-image-slice: 1;
-    border-radius: 0;
-}
-
-.model-container .close-model-btn {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    color: red;
-    top: 22px;
-    right: 90px;
-    cursor: pointer;
-    user-select: none;
-    overflow: hidden;
-}
 
 .model-container .close-model-btn img {
     width: 100%;
     height: 100%;
 }
+
+/*NÚT GACHA*/
+    .special-button {
+        padding: 24px 100px;
+        height: fit-content;
+        user-select: none;
+        position: relative;
+        cursor: pointer;
+        width: fit-content;
+        --transition-time: .2s;
+        font-size: 18px;
+        font-weight: bold;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .special-button::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: "Gacha x" attr(data-count);
+        display: grid;
+        place-content: center;
+        min-width: fit-content;
+        width: calc(100% - 5px);
+        height: calc(100% - 5px);
+        clip-path: polygon(0 50%, 15% 0, 85% 0, 100% 50%, 85% 100%, 15% 100%);
+        background: linear-gradient(45deg, gold, deeppink);
+        z-index: 1;
+        filter: drop-shadow(0 0 15px deeppink);
+    }
+
+    .sub-special-button {
+        position: absolute;
+        top: -5%;
+        left: -5%;
+        width: 110%;
+        height: 110%;
+    }
+
+    .sub-special-button::before,
+    .sub-special-button::after {
+        transition: var(--transition-time);
+        content: "";
+        position: absolute;
+        height: 100%;
+        aspect-ratio: 0.8;
+        background: linear-gradient(90deg, deepskyblue, deeppink);
+    }
+
+    .sub-special-button::before {
+        clip-path: polygon(0% 0%, 90% 49%, -10% 100%, 54% 49%);
+        right: -5px;
+    }
+
+    .sub-special-button.left::before {
+        left: -5px;
+        transform: scaleX(-1);
+    }
+
+    .sub-special-button::after {
+        clip-path: polygon(-50% 0%, 100% 49%, -10% 100%, 50% 49%);
+        right: -10px;
+    }
+
+    .sub-special-button.left::after {
+        left: -10px;
+        transform: scaleX(-1);
+    }
+
+    .special-button.active::before {
+        background: linear-gradient(45deg, gold, deeppink);
+        filter: brightness(1.2);
+    }
+
+    .special-button.active>.sub-special-button::before {
+        filter: brightness(1.5);
+        clip-path: polygon(-10% 0%, 100% 20%, 20% 100%, 50% 49%);
+        right: -10px;
+    }
+
+    .special-button.active>.sub-special-button.left::before {
+        left: -10px;
+    }
+
+    .special-button.active>.sub-special-button:after {
+        filter: brightness(1.5);
+        clip-path: polygon(-50% -10%, 100% 49%, 10% 100%, 50% 49%);
+        opacity: 0.7;
+    }
+
+    .shard {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background: linear-gradient(45deg, deepskyblue, deeppink);
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        opacity: 0;
+    }
+
+    .shard-1 {
+        clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .shard-2 {
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .shard-3 {
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    .shard-4 {
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    .shard-5 {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%);
+    }
+
+    .shard-6 {
+        clip-path: polygon(0 0, 50% 0, 100% 100%);
+    }
+
+    .shard-7 {
+        clip-path: polygon(50% 100%, 100% 0, 0 50%);
+    }
+
+    .shard-8 {
+        clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+    }
+
+    .shard-9 {
+        clip-path: polygon(0 50%, 100% 50%, 50% 0%);
+    }
+
+    .shard-10 {
+        clip-path: polygon(0 0, 50% 100%, 100% 0);
+    }
+/*END NÚT GACHA*/
 
 /*END MODEL*/
 
