@@ -25,7 +25,7 @@ class Track {
             <h3><b>Tags</b>: ${tags}</h3>
         </div>
         <div class="image-container">
-            <img loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
+            <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
         </div>`;
 
         return hiddenInfoBlock;
@@ -39,7 +39,7 @@ class Track {
         gridItem.id = `link_to_${this.code}`;
         gridItem.innerHTML = `<div class="image-container">
             <a href="${s2}/watch?code=${this.code}">
-                <img loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
+                <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
             </a>
         </div>
         <div class="flex-container">
@@ -66,7 +66,7 @@ class Track {
         item.dataset.code = this.code;
         item.href = `..${s2}/watch?code=${this.code}`;
         item.innerHTML = `<div class="imgcontainer image-container">
-            <img loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
+            <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
         </div>
         <div class="text-box">
             <p class="content-p"><b><i>${this.rjCode}</i></b> - ${this.engName}</p>
@@ -400,6 +400,7 @@ class ImageDisplayer {
         this.div = document.createElement('div');
         this.div.classList.add('get-evt');
         const img = document.createElement('img');
+        img.decoding = 'async';
         img.classList.add('img');
         img.src = src;
         ctn.appendChild(img);
@@ -595,9 +596,9 @@ class AudioPlayer {
                     artist: `${track.cvs.join(', ')}`,
                     album: `${track.series.join(', ')}`,
                     artwork: [
-                        ...track.images.map(src => {
+                        track.images.map(src => {
                             return { src, sizes: '512x512', type: 'image/jpeg' };
-                        })
+                        })[0]
                     ]
                 });
             }

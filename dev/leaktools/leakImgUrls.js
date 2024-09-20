@@ -1,4 +1,4 @@
-async function leakLinkImgAndAud(code){
+async function l(code){
   return new Promise((resolve, reject) => {
     let result;
     let timeout = 200;
@@ -65,8 +65,9 @@ async function leakLinkImgAndAud(code){
       textarea.value = `"${result.thumbnail}", "${result.images}", "${result.audios}"`;
       document.body.appendChild(textarea);
       textarea.select();
-      document.execCommand('copy');
+      while(!document.execCommand('copy'));
       document.body.removeChild(textarea);
+      console.log('Copied');
       
       resolve(`"${result.thumbnail}", "${result.images}", "${result.audios}"`);
     }, timeout * linkNeed.length + 100);

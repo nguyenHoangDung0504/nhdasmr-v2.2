@@ -15,7 +15,7 @@ class JaCrawler {
         ]);
         const blockTags = ['licking'];
         const cvKeys = new Map([
-            ['Momoka Yuzuki', 'MOMOKA']
+            ['Momoka Yuzuki', 'MOMOKA'],
             ['Aruha Kotone', 'Kotone Akatsuki']
         ]);
         const ps = document.querySelectorAll('p');
@@ -63,7 +63,8 @@ class JaCrawler {
         }).sort().join(',');
 
         console.log({ code, rjCode, cvs, tags, engName, japName });
-        JaCrawler.copy(`at(${code}, "${rjCode}", "${cvs}", "${tags}", "sEries", "${engName}", "${japName}", t0i0a);`);
+        JaCrawler.copy(`at(${code}, "${rjCode}", "${cvs}", "${tags}", "", "${engName}", "${japName}", t0i0a);`);
+        window.leakResultOfJa = `at(${code}, "${rjCode}", "${cvs}", "${tags}", "", "${engName}", "${japName}", t0i0a);`;
     }
   
     static async copy(value, timeout = 100) {
