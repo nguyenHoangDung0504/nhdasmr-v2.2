@@ -128,7 +128,7 @@ class Cv extends Category {
         return `<span class="cv">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Tag extends Category {
