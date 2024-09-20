@@ -51,7 +51,7 @@ class AltPlayer {
             }
         });
         
-        fullscreenBtn.addEventListener('click', () => document.fullscreen ? AltPlayer.closeFullscreen() : AltPlayer.openFullscreen());
+        fullscreenBtn.addEventListener('click', () => document.fullscreenElement ? AltPlayer.closeFullscreen() : AltPlayer.openFullscreen());
 
         document.querySelector('#next-btn').addEventListener('click', () => {
             contentContainer.appendChild(contentContainer.firstChild);
@@ -115,7 +115,7 @@ class AltPlayer {
         screen.orientation.unlock();
     }
     static rolateScreen() {
-        if (document.fullscreen) {
+        if (document.fullscreenElement) {
             if (AltPlayer.isPortrait) {
                 screen.orientation.unlock();
                 screen.orientation.lock('landscape');

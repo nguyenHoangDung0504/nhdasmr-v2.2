@@ -47,7 +47,7 @@ class App {
             if (searchValue) {
                 mainSearchInput.value = '';
                 if (!developerSearch(searchValue)) {
-                    window.location = `..?search=${encodeURIComponent(searchValue)}`;
+                    window.location = `${window.location.href.includes('s2') ? '/s2' : ''}/?search=${encodeURIComponent(searchValue)}`;
                 }
             }
         });
@@ -58,7 +58,7 @@ class App {
                 if (searchValue) {
                     mainSearchInput.value = '';
                     if (!developerSearch(searchValue)) {
-                        window.location = `..?search=${encodeURIComponent(searchValue)}`;
+                        window.location = `${window.location.href.includes('s2') ? '/s2' : ''}/?search=${encodeURIComponent(searchValue)}`;
                     }
                 }
             }
@@ -73,7 +73,7 @@ class App {
                 return;
             }
 
-            if (value.includes('@')) {
+            if (value.includes('@') && !window.location.href.includes('s2')) {
                 resultBox.innerHTML = /*html*/`
                     <a href="../?search=@n"><span style="color: #00BFFF;">►</span><strong>@n</strong>: <span class="cnt">View newest tracks</span></a>
                     <a href="../dev/list-code"><span style="color: #00BFFF;">►</span><strong>@lc or @listcode</strong>: <span class="cnt">View list code</span></a>
@@ -147,7 +147,7 @@ class App {
         [Database.cvMap, Database.tagMap, Database.seriesMap].forEach((map, index) => {
             map.forEach(value => {
                 const { name, quantity } = value;
-                htmls[index] += /*html*/`<a href="../?${types[index]}=${encodeURIComponent(name)}" class="item" quantity="${quantity}">${name}</a>`;
+                htmls[index] += /*html*/`<a href="${window.location.href.includes('s2') ? '/s2' : ''}/?${types[index]}=${encodeURIComponent(name)}" class="item" quantity="${quantity}">${name}</a>`;
             });
         });
 
