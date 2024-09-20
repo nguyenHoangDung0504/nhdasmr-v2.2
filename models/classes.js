@@ -140,7 +140,7 @@ class Tag extends Category {
         return `<span class="tag">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Series extends Category {
@@ -152,7 +152,7 @@ class Series extends Category {
         return `<span class="series">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class SearchResult {
