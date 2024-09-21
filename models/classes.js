@@ -703,17 +703,13 @@ class ZoomableContainer extends HTMLElement {
      */
     handleTouchStart(e) {
         if (e.touches.length === 2) {
-            const [p1, p2] = e.touches;
-
             this.isPinching = true;
             this.initialDistance = this.getDistanceBetweenTouches(e.touches);
             this.initialScale = this.scale;
 
-            const { left, top } = this.getBoundingClientRect();
-            this.touchCenterX = 1/2 * (p1.clientX + p2.clientX) - left;
-            this.touchCenterY = 1/2 * (p1.clientY + p2.clientY) - top;
-            // this.touchCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-            // this.touchCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+            const rect = this.getBoundingClientRect();
+            this.touchCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+            this.touchCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
         }
     }
 
