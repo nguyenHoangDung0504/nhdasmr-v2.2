@@ -63,7 +63,7 @@ class JaCrawler {
         }).sort().join(',');
 
         console.log({ code, rjCode, cvs, tags, engName, japName });
-        JaCrawler.copy(`at(${code}, "${rjCode}", "${cvs}", "${tags}", "", "${engName}", "${japName}", t0i0a);`);
+        JaCrawler.copy(`at(${code}, "${rjCode}", "${cvs}", "${tags}", "", "${engName}", "${japName}", t0i0a)`);
         window.leakResultOfJa = `at(${code}, "${rjCode}", "${cvs}", "${tags}", "", "${engName}", "${japName}", t0i0a);`;
     }
   

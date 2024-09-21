@@ -34,7 +34,8 @@ class Database {
             return new OtherLink(note, link);
         });
       
-        rjCode = 'No_RJ' + Array(6 - rjCode.length).fill('0').join('') + rjCode;
+        if(!rjCode.includes('RJ'))
+            rjCode = 'No_RJ' + Array(6 - rjCode.length).fill('0').join('') + rjCode;
 
         const track = new Track(code, rjCode, cvs, tags, series, engName, japName, thumbnail, images, audios, otherLinks);
         if (!track.images.includes(track.thumbnail)) 
@@ -337,8 +338,8 @@ class Database {
     at(9, '9', "LemonKynn", "Blowjob,English", "", "Erotic Audio RP - Reminding Your Free Use Roomate of Her Role", "", "https://cdn.glitch.global/d8e66c1f-74c5-4053-808b-edf278b2a7e7/9-0.jpg?v=1717687426480", "", "https://cdn.glitch.global/d8e66c1f-74c5-4053-808b-edf278b2a7e7/9-t1.mp3?v=1717687431138")
     at(10, '10', "LemonKynn", "Kouhai,English", "", "Erotic ASMR RP - Convenient Submissive Cocksucker +1 To Your Collection", "", "https://cdn.glitch.global/d8e66c1f-74c5-4053-808b-edf278b2a7e7/10-0.jpg?v=1717689102845", "", "https://cdn.glitch.global/d8e66c1f-74c5-4053-808b-edf278b2a7e7/10-t1.mp3?v=1717689107866")
     at(11, '11', "SoleilASMR", "Blowjob,Handjob,Twin Tails,English", "", "Your Good Girl Wakes You Up for a Sloppy Blowjob & Swallows Your Cum (ASMR Audio Porn Roleplay)", "", "https://cdn.glitch.global/d8e66c1f-74c5-4053-808b-edf278b2a7e7/11-0.jpg?v=1717689108953", "", "https://cdn.glitch.me/d8e66c1f-74c5-4053-808b-edf278b2a7e7/11-t1.mp3?v=1717689112003")
-    at(12, '12', "", "", "", "engName", "", t0i0a)
-    at(13, '13', "", "", "", "engName", "", t0i0a)
+    at(12, "RJ01065824", "Meiya Yume", "3D,ASMR,Ahegao,Animation,Blowjob,Ear Licking,Foot Job,Futanari,Hand Job,Kissing,Peeing,Perverted,School Uniform,Vtuber,Video", "", "Meiya Yume Fantia Ona Support ASMR Compilation", "迷夜ゆめ ファンティアオナサポASMR総集編2022.9-2023.2", "https://cdn.glitch.global/cedb5300-5543-41d1-998d-e607a61661f4/rj01065824(0)?v=1694502918272", "https://cdn.glitch.global/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_1.mp4?v=1694504395153,https://cdn.glitch.me/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_2.mp4?v=1694504429342,https://cdn.glitch.me/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_3.mp4?v=1694504466949,https://cdn.glitch.me/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_4.mp4?v=1694504506876,https://cdn.glitch.me/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_5.mp4?v=1694504532582,https://cdn.glitch.me/cedb5300-5543-41d1-998d-e607a61661f4/RJ01065824_6.mp4?v=1694504553862", "")
+    at(13, "RJ01079769", "Aino Mimori", "Animation,Big Breasts,Assjob,Swimwear,School Swimwear,School Girl,Blowjob,Video,Live 2D,Dirty Talk,Tease", "", "Masochist hunting", "マゾ狩り", "https://cdn.glitch.global/36049008-0c55-496e-873e-a2f971037d73/47161-0.webp?v=1712133569025", "https://cdn.glitch.me/36049008-0c55-496e-873e-a2f971037d73/47161-1.mp4?v=1712133567460", "")
     at(14, '14', "", "", "", "engName", "", t0i0a)
     at(15, '15', "", "", "", "engName", "", t0i0a)
     at(16, '16', "", "", "", "engName", "", t0i0a)

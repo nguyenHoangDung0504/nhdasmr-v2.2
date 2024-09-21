@@ -64,7 +64,7 @@ class Track {
         const item = document.createElement('a');
 
         item.dataset.code = this.code;
-        item.href = `..${s2}/watch/?code=${this.code}`;
+        item.href = `${s2}/watch/?code=${this.code}`;
         item.innerHTML = `<div class="imgcontainer image-container">
             <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
         </div>

@@ -61,7 +61,7 @@ class AltPlayer {
         });
     }
     static buildContent() {
-        const { contentContainer, mp3Container } = AltPlayer.reuableElements;
+        const { fullscreenBtn, contentContainer, mp3Container } = AltPlayer.reuableElements;
         const { images, audios } = AltPlayer.track;
         
         images.forEach(iov => {
@@ -70,14 +70,21 @@ class AltPlayer {
                 : new ImageDisplayer(iov, AltPlayer.closeFullscreen, AltPlayer.openFullscreen)
             );
         });
-        audios.forEach(src => {
-            mp3Container.appendChild(new AudioController(src));
-        });
-        
-        new AudioPlayer(
-            Array.from(document.querySelectorAll('audio')), 
-            AltPlayer.track
-        ).setupMediaSession();
+      
+        if(audios.length > 0) {
+            audios.forEach(src => {
+                mp3Container.appendChild(new AudioController(src));
+            });
+
+            new AudioPlayer(
+                Array.from(document.querySelectorAll('audio')), 
+                AltPlayer.track
+            ).setupMediaSession();            
+        } else {
+            mp3Container.remove();
+            document.querySelector('#opn-cls-menu-mp3-btn').remove();
+            fullscreenBtn.remove();
+        }
     }
     static openFullscreen() {
         const icon = AltPlayer.reuableElements.fullscreenIcon;
