@@ -33,17 +33,17 @@ class Track {
 
     getGridItemElement() {
         const gridItem = document.createElement('div');
-
+        
         gridItem.dataset.code = this.code;
         gridItem.classList.add('grid-item');
         gridItem.id = `link_to_${this.code}`;
         gridItem.innerHTML = `<div class="image-container">
-            <a href="${s2}/watch?code=${this.code}">
+            <a href="${s2}/watch/?code=${this.code}">
                 <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
             </a>
         </div>
         <div class="flex-container">
-            <a href="${s2}/watch?code=${this.code}">
+            <a href="${s2}/watch/?code=${this.code}">
                 <div class="text-container">
                     <p class="multiline-ellipsis">
                         <b><i>${this.rjCode}</i></b> - <span>${this.engName}</span>
@@ -64,7 +64,7 @@ class Track {
         const item = document.createElement('a');
 
         item.dataset.code = this.code;
-        item.href = `..${s2}/watch?code=${this.code}`;
+        item.href = `${s2}/watch/?code=${this.code}`;
         item.innerHTML = `<div class="imgcontainer image-container">
             <img decoding="async" loading="lazy" src="${this.thumbnail}" alt="thumbnail of ${this.code}">
         </div>
@@ -128,7 +128,7 @@ class Cv extends Category {
         return `<span class="cv">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?cv=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Tag extends Category {
@@ -140,7 +140,7 @@ class Tag extends Category {
         return `<span class="tag">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?tag=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class Series extends Category {
@@ -152,7 +152,7 @@ class Series extends Category {
         return `<span class="series">${this.name} (${this.quantity})</span>`;
     }
     getHtmlLink() {
-        return `<a href="..${s2}/?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
+        return `<a href="${s2}/?series=${encodeURIComponent(this.name)}">${this.getHtml()}</a>`;
     }
 }
 class SearchResult {
@@ -163,8 +163,8 @@ class SearchResult {
     getHtml() {
         const value = Utils.highlight(this.value, this.keyword);
         const href = ['cv', 'tag', 'series'].includes(this.type)
-                      ? `..?${this.type}=${encodeURIComponent(this.value)}` 
-                      : `..${s2}/watch?code=${this.code}`;
+                      ? `${s2}/?${this.type}=${encodeURIComponent(this.value)}` 
+                      : `${s2}/watch/?code=${this.code}`;
         return `<a href="${href}">
             <i class="fas fa-search"></i>&nbsp;
             <strong>${Utils.convertToTitleCase(this.type)}</strong>:
@@ -219,11 +219,13 @@ class SwipeHandler {
         }
     }
     handleTouchStart(event) {
+        if(event.touches.length > 1) return;
         this.startX = event.touches[0].clientX;
         this.startY = event.touches[0].clientY;
         this.isSelectingText = false;
     }
     handleTouchEnd(event) {
+        if(event.touches.length > 1) return;
         this.endX = event.changedTouches[0].clientX;
         this.endY = event.changedTouches[0].clientY;
         if (!this.isSelectingText) {
@@ -405,7 +407,7 @@ class ImageDisplayer {
         img.src = src;
         ctn.appendChild(img);
         this.div.addEventListener('dblclick', () => {
-            if (document.fullscreen) {
+            if (document.fullscreenElement) {
                 closeFullscreen();
                 return;
             }

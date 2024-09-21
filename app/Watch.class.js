@@ -24,9 +24,9 @@ class Watch {
         const { code, rjCode, cvs, tags, series, engName, japName, otherLinks } = Watch.track;
         const trackInfoContainer = document.querySelector('#track-info');
         const trackInfoRowsHtml = [];
-        const vidFrame = document.querySelector('#vid_frame')
+        const vidFrame = document.querySelector('#vid_frame');
         
-        vidFrame.src = `watch/altplayer?code=${code}`;
+        vidFrame.src = `${window.location.href.includes('s2') ? '/s2' : ''}/watch/altplayer/?code=${code}`;
         vidFrame.addEventListener('focus', function() {
             document.addEventListener('touchmove', preventScroll, { passive: false });
         });
@@ -37,7 +37,7 @@ class Watch {
           e.preventDefault();
         }
       
-        document.querySelector('#download-box a').href = `watch/download?code=${code}`;
+        document.querySelector('#download-box a').href = `${window.location.href.includes('s2') ? '/s2' : ''}/watch/download/?code=${code}`;
         trackInfoRowsHtml.push(`
             <span id="track_name">${rjCode ? `<b>Search code: </b>${rjCode}` : ''}
             ${japName ? `<br><br><b>Original name</b>: ${japName}` : ''}</span>
