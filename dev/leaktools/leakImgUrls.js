@@ -73,3 +73,5 @@ async function l(code){
     }, timeout * linkNeed.length + 100);
   });
 }
+
+document.querySelector('input[type="file"]').setAttribute('multiple', '');

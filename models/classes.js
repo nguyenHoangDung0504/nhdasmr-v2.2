@@ -397,7 +397,8 @@ class ImageDisplayer {
         this.startMouseX = 0; this.currentMouseX = 0; this.diffMouseX = 0;
         this.startMouseY = 0; this.currentMouseY = 0; this.diffMouseY = 0;
 
-        const ctn = document.createElement('div');
+        // const ctn = document.createElement('div');
+        const ctn = document.createElement('zoomable-content');
         ctn.classList.add('img-ctn');
         this.div = document.createElement('div');
         this.div.classList.add('get-evt');
@@ -622,3 +623,129 @@ class AudioPlayer {
 }
 
 Utils.memoizeGetAndSearchMethods(Track, Cv, Tag, Series, SearchResult, OtherLink);
+
+/**Components ----------------------------------------------------------------------------- */
+
+class ZoomableContainer extends HTMLElement {
+    static TAG_NAME = 'zoomable-content';
+
+    constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: 'open' });
+        const templateElem = document.createElement('template');
+        templateElem.innerHTML = this.definedStyle + this.definedHtmlTemplate;
+        shadow.appendChild(templateElem.content.cloneNode(true));
+    }
+
+    get definedStyle() {
+        const style = /*css*/`
+            :host {
+                display: block;
+                unicode-bidi: isolate;
+                overflow: auto;
+                position: relative;
+            }
+
+            .content {
+                transition: transform .2s;
+                transform-origin: top left;
+                width: fit-content;
+                height: fit-content;
+            }
+
+            ::part(content) {}
+
+            @media screen and (max-width: 730px) {
+                .content {
+                    transition: transform 0s;
+                }
+            }
+        `;
+
+        return `<style>${style}</style>`;
+    }
+
+    get definedHtmlTemplate() {
+        return /*html*/`
+            <div class="content" part="content">
+                <slot></slot>
+            </div>
+        `;
+    }
+
+    connectedCallback() {
+        this.scale = 1;
+        this.minScale = 1;
+        this.maxScale = 5;
+        this.isPinching = false;
+
+        this.addEventListener('wheel', this.handleWheelZoom.bind(this));
+        this.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        this.addEventListener('touchmove', this.handleTouchMove.bind(this));
+        this.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    /**
+     * 
+     * @param {WheelEvent} e 
+     */
+    handleWheelZoom(e) {
+        if (e.ctrlKey) {
+            e.preventDefault();
+            this.scale += e.deltaY * -0.01;
+            this.scale = Math.min(Math.max(this.minScale, this.scale), this.maxScale);
+            this.updateZoom();
+        }
+    }
+
+    /**
+     * @param {TouchEvent} e 
+     */
+    handleTouchStart(e) {
+        if (e.touches.length === 2) {
+            this.isPinching = true;
+            this.initialDistance = this.getDistanceBetweenTouches(e.touches);
+            this.initialScale = this.scale;
+
+            const rect = this.getBoundingClientRect();
+            this.touchCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+            this.touchCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+        }
+    }
+
+    /**
+     * @param {TouchEvent} e 
+     */
+    handleTouchMove(e) {
+        if (this.isPinching && e.touches.length === 2) {
+            e.preventDefault();
+
+            const newDistance = this.getDistanceBetweenTouches(e.touches);
+            const scaleChange = newDistance / this.initialDistance;
+            this.scale = Math.min(Math.max(this.minScale, this.initialScale * scaleChange), this.maxScale);
+
+            this.updateZoom();
+        }
+    }
+
+    handleTouchEnd(e) {
+        this.isPinching = false;
+    }
+
+    /**
+     * @param {TouchList} touches 
+     * @returns {number}
+     */
+    getDistanceBetweenTouches(touches) {
+        return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+    }
+
+    updateZoom() {
+        const content = this.shadowRoot.querySelector('.content');
+        if(![1, 5].includes(this.scale)) {
+            content.style.transformOrigin = `${this.touchCenterX}px ${this.touchCenterY}px`;
+        }
+        content.style.transform = `scale(${this.scale})`;
+    }
+}
+customElements.define(ZoomableContainer.TAG_NAME, ZoomableContainer);

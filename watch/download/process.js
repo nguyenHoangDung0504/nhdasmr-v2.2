@@ -20,7 +20,6 @@ images = imgs;
 let audios = data.audios;
 
 function extractNumberFromLink(link) {
-    // Tách phần số từ đường link
     let startIndex = link.lastIndexOf('/') + 1;
     let endIndex = link.lastIndexOf('.');
     endIndex = (endIndex > startIndex) ? endIndex : (link.lastIndexOf('?v'));
@@ -41,9 +40,11 @@ function downloadZip() {
     const totalFiles = numberOfImages + numberOfAudios;
 
     const statusElement = document.getElementById('status');
-    statusElement.innerHTML = `Processing: ${filename}.zip<br><br>
-                                The file is being compressed and is ready to download immediately, this will take time, but you will no longer have to wait for downloads once the compression process is complete.<br>
-                                (File đang được nén và sẵn sàng tải xuống lập tức, việc này sẽ tốn nhiều thời gian, nhưng bạn sẽ không phải chờ tải nữa khi tiến trình nén hoàn thành.)`;
+    statusElement.innerHTML = `Processing: ${filename}.zip
+        <br><br>
+        The file is being compressed and is ready to download immediately, 
+        this will take time, but you will no longer have to wait for downloads once the compression process is complete.
+        <br>`;
     const percent = document.getElementById('percent');
     const process = document.getElementById('process');
 
@@ -52,7 +53,7 @@ function downloadZip() {
         percent.innerText = mess ? `${filesDownloaded}/${totalFiles} File has been processed - Done!` : `${filesDownloaded}/${totalFiles} File has been processed`;
         process.style.width = `${percentage}%`;
         if (mess)
-            document.querySelector('body').innerHTML += `<br><a href="../watch?code=${trackId}">Go Back</a>`;
+            document.querySelector('body').innerHTML += `<br><a href="${window.location.href.includes('s2') ? '/s2' : ''}/watch?code=${trackKey}">Go Back</a>`;
     }
 
     /***/
