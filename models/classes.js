@@ -747,5 +747,8 @@ class ZoomableContainer extends HTMLElement {
         }
         content.style.transform = `scale(${this.scale})`;
     }
+} try{
+    customElements.define(ZoomableContainer.TAG_NAME, ZoomableContainer);
+} catch(e) {
+    
 }
-customElements.define(ZoomableContainer.TAG_NAME, ZoomableContainer);

@@ -11,7 +11,11 @@ class JaCrawler {
             ['Imouto', 'Younger Sister'],
             ['Oneesan', 'Elder Sister'],
             ['Breast Sex', 'Paizuri'],
-            ['Trap', 'Crossdress']
+            ['Trap', 'Crossdress'],
+            ['Voluptuous/Plump', 'Chubby'],
+            ['Real Elder Sister', 'Sister,Oneesan,Incest'],
+            ['Mommie', 'Mother'],
+            ['Jock/Athlete/Sports', 'Sport Girl']
         ]);
         const blockTags = ['licking'];
         const cvKeys = new Map([
