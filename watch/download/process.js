@@ -53,7 +53,7 @@ function downloadZip() {
         percent.innerText = mess ? `${filesDownloaded}/${totalFiles} File has been processed - Done!` : `${filesDownloaded}/${totalFiles} File has been processed`;
         process.style.width = `${percentage}%`;
         if (mess)
-            document.querySelector('body').innerHTML += `<br><a href="${window.location.href.includes('s2') ? '/s2' : ''}/watch?code=${trackKey}">Go Back</a>`;
+            document.querySelector('body').innerHTML += `<br><a href="${window.location.href.includes('s2') ? '/s2' : ''}/watch/?code=${trackKey}">Go Back</a>`;
     }
 
     /***/

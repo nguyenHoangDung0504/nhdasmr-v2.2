@@ -45,7 +45,6 @@ video {
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: auto;
     transition: 0.2s;
 }
 
@@ -170,10 +169,10 @@ body.open-menu-mp3 .menu-mp3 {
     transform: translateY(0);
 }
 
-body.open-menu-mp3.open-menu-ctn .menu-mp3 {
-    /*     transform: translateX(50px);
-      width: calc(100% - 50px); */
-}
+/* body.open-menu-mp3.open-menu-ctn .menu-mp3 {
+    transform: translateX(50px);
+    width: calc(100% - 50px);
+} */
 
 body.open-menu-mp3.open-menu-ctn.menu-ctn-right .menu-mp3 {
     transform: translateX(0);
