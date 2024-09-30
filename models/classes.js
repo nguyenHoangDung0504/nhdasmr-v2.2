@@ -257,12 +257,13 @@ class SwipeHandler {
     }
 }
 class VideoPlayer {
+    #isDragging = false;
+
     constructor(src) {
-        this.isDragging = false;
         this.currentTime = 0;
         this.touchStartX = 0;
 
-        this.vidContainer = document.createElement('div');
+        this.vidContainer = document.createElement('zoomable-content');
         this.vidContainer.classList.add('video-ctn');
         this.vidContainer.innerHTML = '<div class="time-indicator" style="display: none;"></div>';
         this.video = document.createElement('video');
@@ -273,6 +274,8 @@ class VideoPlayer {
         this.video.preload = "auto";
         this.timeIndicator = this.vidContainer.querySelector('.time-indicator');
         this.vidContainer.appendChild(this.video);
+
+        this.video.addEventListener('click', e => this.vidContainer.scale !== 1 && e.preventDefault());
 
         this.vidContainer.addEventListener('mousedown', () => {
             this.isDragging = true;
@@ -350,10 +353,19 @@ class VideoPlayer {
 
         return this.vidContainer;
     }
+
+    set isDragging(value) {
+        this.#isDragging = value;
+    }
+
+    get isDragging() {
+        return this.#isDragging && this.vidContainer.scale === 1;
+    }
+
     play() {
         setTimeout(() => {
-            if (this.video.dataset.isPause == 'false')
-                return;
+            if(this.vidContainer.scale === 1) return; 
+            if (this.video.dataset.isPause == 'false') return;
             this.video.dataset.isPause = false;
             this.video.play();
         }, 10);
@@ -397,7 +409,8 @@ class ImageDisplayer {
         this.startMouseX = 0; this.currentMouseX = 0; this.diffMouseX = 0;
         this.startMouseY = 0; this.currentMouseY = 0; this.diffMouseY = 0;
 
-        const ctn = document.createElement('div');
+        // const ctn = document.createElement('div');
+        const ctn = document.createElement('zoomable-content');
         ctn.classList.add('img-ctn');
         this.div = document.createElement('div');
         this.div.classList.add('get-evt');
@@ -415,10 +428,10 @@ class ImageDisplayer {
         });
 
         new SwipeHandler(this.div, 
-            () => document.querySelector('#prev-btn').click(),
-            () => document.querySelector('#next-btn').click(),
-            () => document.body.classList.add('open-menu-mp3'),
-            () => document.body.classList.remove('open-menu-mp3')
+            () => ctn.scale === 1 && document.querySelector('#prev-btn').click(),
+            () => ctn.scale === 1 && document.querySelector('#next-btn').click(),
+            () => ctn.scale === 1 && document.body.classList.add('open-menu-mp3'),
+            () => ctn.scale === 1 && document.body.classList.remove('open-menu-mp3')
         ).registerEvents();
 
         ctn.appendChild(this.div);

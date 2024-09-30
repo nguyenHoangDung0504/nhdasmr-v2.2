@@ -32,13 +32,15 @@ class ZoomableContainer extends HTMLElement {
                 height: 100%;
                 user-select: none;
             }
+
+            ::part(content) {}
         `;
         return `<style>${style}</style>`;
     }
 
     get #definedHtmlTemplate() {
         return /*html*/`
-            <div class="content">
+            <div class="content" part="content">
                 <slot></slot>
             </div>
         `;

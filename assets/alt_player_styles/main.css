@@ -48,6 +48,12 @@ video {
     transition: 0.2s;
 }
 
+.img-ctn::part(.content) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .img-ctn::part(content) {
     width: 100%;
     height: 100%;
