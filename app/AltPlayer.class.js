@@ -83,7 +83,6 @@ class AltPlayer {
         } else {
             mp3Container.remove();
             document.querySelector('#opn-cls-menu-mp3-btn').remove();
-            fullscreenBtn.remove();
         }
     }
     static openFullscreen() {

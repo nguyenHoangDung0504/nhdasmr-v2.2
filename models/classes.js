@@ -257,12 +257,13 @@ class SwipeHandler {
     }
 }
 class VideoPlayer {
+    #isDragging = false;
+
     constructor(src) {
-        this.isDragging = false;
         this.currentTime = 0;
         this.touchStartX = 0;
 
-        this.vidContainer = document.createElement('div');
+        this.vidContainer = document.createElement('zoomable-content');
         this.vidContainer.classList.add('video-ctn');
         this.vidContainer.innerHTML = '<div class="time-indicator" style="display: none;"></div>';
         this.video = document.createElement('video');
@@ -273,6 +274,9 @@ class VideoPlayer {
         this.video.preload = "auto";
         this.timeIndicator = this.vidContainer.querySelector('.time-indicator');
         this.vidContainer.appendChild(this.video);
+
+        this.video.addEventListener('click', e => this.vidContainer.scale !== 1 && e.preventDefault());
+        this.video.addEventListener('dblclick', e => e.preventDefault());
 
         this.vidContainer.addEventListener('mousedown', () => {
             this.isDragging = true;
@@ -316,6 +320,10 @@ class VideoPlayer {
         });
 
         this.vidContainer.addEventListener('touchstart', (event) => {
+            if(this.vidContainer.scale !== 1) {
+                event.preventDefault();
+                return;
+            }
             this.isDragging = true;
             this.pause();
             this.touchStartX = event.touches[0].clientX;
@@ -350,10 +358,19 @@ class VideoPlayer {
 
         return this.vidContainer;
     }
+
+    set isDragging(value) {
+        this.#isDragging = value;
+    }
+
+    get isDragging() {
+        return this.#isDragging && this.vidContainer.scale === 1;
+    }
+
     play() {
         setTimeout(() => {
-            if (this.video.dataset.isPause == 'false')
-                return;
+            if(this.vidContainer.scale === 1) return; 
+            if (this.video.dataset.isPause == 'false') return;
             this.video.dataset.isPause = false;
             this.video.play();
         }, 10);
@@ -416,10 +433,10 @@ class ImageDisplayer {
         });
 
         new SwipeHandler(this.div, 
-            () => document.querySelector('#prev-btn').click(),
-            () => document.querySelector('#next-btn').click(),
-            () => document.body.classList.add('open-menu-mp3'),
-            () => document.body.classList.remove('open-menu-mp3')
+            () => ctn.scale === 1 && document.querySelector('#prev-btn').click(),
+            () => ctn.scale === 1 && document.querySelector('#next-btn').click(),
+            () => ctn.scale === 1 && document.body.classList.add('open-menu-mp3'),
+            () => ctn.scale === 1 && document.body.classList.remove('open-menu-mp3')
         ).registerEvents();
 
         ctn.appendChild(this.div);
@@ -623,132 +640,3 @@ class AudioPlayer {
 }
 
 Utils.memoizeGetAndSearchMethods(Track, Cv, Tag, Series, SearchResult, OtherLink);
-
-/**Components ----------------------------------------------------------------------------- */
-
-class ZoomableContainer extends HTMLElement {
-    static TAG_NAME = 'zoomable-content';
-
-    constructor() {
-        super();
-        const shadow = this.attachShadow({ mode: 'open' });
-        const templateElem = document.createElement('template');
-        templateElem.innerHTML = this.definedStyle + this.definedHtmlTemplate;
-        shadow.appendChild(templateElem.content.cloneNode(true));
-    }
-
-    get definedStyle() {
-        const style = /*css*/`
-            :host {
-                display: block;
-                unicode-bidi: isolate;
-                overflow: auto;
-                position: relative;
-            }
-
-            .content {
-                transition: transform .2s;
-                transform-origin: top left;
-                width: fit-content;
-                height: fit-content;
-            }
-
-            ::part(content) {}
-
-            @media screen and (max-width: 730px) {
-                .content {
-                    transition: transform 0s;
-                }
-            }
-        `;
-
-        return `<style>${style}</style>`;
-    }
-
-    get definedHtmlTemplate() {
-        return /*html*/`
-            <div class="content" part="content">
-                <slot></slot>
-            </div>
-        `;
-    }
-
-    connectedCallback() {
-        this.scale = 1;
-        this.minScale = 1;
-        this.maxScale = 5;
-        this.isPinching = false;
-
-        this.addEventListener('wheel', this.handleWheelZoom.bind(this));
-        this.addEventListener('touchstart', this.handleTouchStart.bind(this));
-        this.addEventListener('touchmove', this.handleTouchMove.bind(this));
-        this.addEventListener('touchend', this.handleTouchEnd.bind(this));
-    }
-
-    /**
-     * 
-     * @param {WheelEvent} e 
-     */
-    handleWheelZoom(e) {
-        if (e.ctrlKey) {
-            e.preventDefault();
-            this.scale += e.deltaY * -0.01;
-            this.scale = Math.min(Math.max(this.minScale, this.scale), this.maxScale);
-            this.updateZoom();
-        }
-    }
-
-    /**
-     * @param {TouchEvent} e 
-     */
-    handleTouchStart(e) {
-        if (e.touches.length === 2) {
-            this.isPinching = true;
-            this.initialDistance = this.getDistanceBetweenTouches(e.touches);
-            this.initialScale = this.scale;
-
-            const rect = this.getBoundingClientRect();
-            this.touchCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-            this.touchCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-        }
-    }
-
-    /**
-     * @param {TouchEvent} e 
-     */
-    handleTouchMove(e) {
-        if (this.isPinching && e.touches.length === 2) {
-            e.preventDefault();
-
-            const newDistance = this.getDistanceBetweenTouches(e.touches);
-            const scaleChange = newDistance / this.initialDistance;
-            this.scale = Math.min(Math.max(this.minScale, this.initialScale * scaleChange), this.maxScale);
-
-            this.updateZoom();
-        }
-    }
-
-    handleTouchEnd(e) {
-        this.isPinching = false;
-    }
-
-    /**
-     * @param {TouchList} touches 
-     * @returns {number}
-     */
-    getDistanceBetweenTouches(touches) {
-        return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
-    }
-
-    updateZoom() {
-        const content = this.shadowRoot.querySelector('.content');
-        if(![1, 5].includes(this.scale)) {
-            content.style.transformOrigin = `${this.touchCenterX}px ${this.touchCenterY}px`;
-        }
-        content.style.transform = `scale(${this.scale})`;
-    }
-} try{
-    customElements.define(ZoomableContainer.TAG_NAME, ZoomableContainer);
-} catch(e) {
-    
-}
