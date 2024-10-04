@@ -48,7 +48,7 @@ video {
     transition: 0.2s;
 }
 
-.img-ctn::part(.content) {
+.img-ctn::part(content) {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -276,6 +276,7 @@ class VideoPlayer {
         this.vidContainer.appendChild(this.video);
 
         this.video.addEventListener('click', e => this.vidContainer.scale !== 1 && e.preventDefault());
+        this.video.addEventListener('dblclick', e => e.preventDefault());
 
         this.vidContainer.addEventListener('mousedown', () => {
             this.isDragging = true;
@@ -319,6 +320,10 @@ class VideoPlayer {
         });
 
         this.vidContainer.addEventListener('touchstart', (event) => {
+            if(this.vidContainer.scale !== 1) {
+                event.preventDefault();
+                return;
+            }
             this.isDragging = true;
             this.pause();
             this.touchStartX = event.touches[0].clientX;

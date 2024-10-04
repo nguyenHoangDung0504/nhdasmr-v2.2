@@ -18,7 +18,6 @@ class ZoomableContainer extends HTMLElement {
             :host {
                 display: block;
                 overflow: hidden;
-                position: relative;
                 cursor: grab;
             }
 
@@ -26,21 +25,19 @@ class ZoomableContainer extends HTMLElement {
                 cursor: grabbing;
             }
 
-            .content {
+            :host::part(content) {
                 transform-origin: 0 0;
                 width: 100%;
                 height: 100%;
                 user-select: none;
             }
-
-            ::part(content) {}
         `;
         return `<style>${style}</style>`;
     }
 
     get #definedHtmlTemplate() {
         return /*html*/`
-            <div class="content" part="content">
+            <div part="content">
                 <slot></slot>
             </div>
         `;
@@ -58,7 +55,7 @@ class ZoomableContainer extends HTMLElement {
         this.dragStart = { x: 0, y: 0 };
         this.offset = { x: 0, y: 0 };
 
-        this.content = this.shadowRoot.querySelector('.content');
+        this.content = this.shadowRoot.querySelector('[part="content"]');
 
         // Xử lý cuộn để thu phóng (desktop)
         this.addEventListener('wheel', this.handleWheelZoom.bind(this));
@@ -208,10 +205,14 @@ class ZoomableContainer extends HTMLElement {
 
     /**
      * Xử lý sự kiện khi thả ngón tay ra (Thả)
+     * @param {TouchEvent} e 
      */
-    handleTouchEnd() {
-        this.isDragging = false;
-        this.isPinching = false;
+    handleTouchEnd(e) {
+        if (e.touches.length === 2) {
+            this.isPinching = false;
+        } else if (e.touches.length === 1) {
+            this.isDragging = false;
+        }
     }
 
     /**
