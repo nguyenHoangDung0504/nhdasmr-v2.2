@@ -15,7 +15,9 @@ class JaCrawler {
             ['Voluptuous/Plump', 'Chubby'],
             ['Real Elder Sister', 'Sister,Oneesan,Incest'],
             ['Mommie', 'Mother'],
-            ['Jock/Athlete/Sports', 'Sport Girl']
+            ['Jock/Athlete/Sports', 'Sport Girl'],
+            ['Cohabitation', 'Living Together'],
+            ['Lovers', 'Girlfriend'],
         ]);
         const blockTags = ['licking'];
         const cvKeys = new Map([
