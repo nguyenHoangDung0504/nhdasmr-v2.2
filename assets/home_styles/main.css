@@ -84,7 +84,7 @@ body.openMenu p.message {
     transition: margin var(--time);
     color: var(--text-color);
     display: block;
-    font-size: 24px;
+    font-size: 22px;
     margin: calc(var(--screen-width) * .02);
 }
 

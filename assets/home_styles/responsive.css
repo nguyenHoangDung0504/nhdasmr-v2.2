@@ -597,6 +597,7 @@
 
     .pagination .pagination-body a:not(#none-link, .active):hover {
         background-color: var(--bg);
+        color: var(--text-color);
         border: 0px solid;
     }
 
@@ -954,6 +955,7 @@
 
     .pagination .pagination-body a:not(#none-link, .active):hover {
         background-color: var(--bg);
+        color: var(--text-color);
         border: 0px solid;
     }
 
