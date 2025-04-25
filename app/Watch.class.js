@@ -22,7 +22,10 @@ class Watch {
         fetch(`/descriptions/${Watch.track.code}/vi.html`)
             .catch((e) => undefined)
             .then(res => res.text())
-            .then(html => document.getElementById('track-description').innerHTML = html);
+            .then(html => {
+                if (html.includes('desc-type'))
+                    document.getElementById('track-description').innerHTML = html
+            });
     }
 
     static buildVidDiv() {

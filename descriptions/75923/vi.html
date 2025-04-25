@@ -6,7 +6,7 @@
             padding: 1rem;
         }
 
-        .desc-type-1 > div {
+        .desc-type-1>div {
             padding-bottom: 1rem;
         }
 
@@ -22,47 +22,32 @@
 
         .desc-type-1 p {
             display: block;
-            padding-left: 1.5rem;
+            padding-left: 1.25rem;
             line-height: 1.5;
             text-align: justify;
+            font-size: clamp(.8rem, 2vw, 1rem);
+        }
+
+        .desc-type-1 strong {
+            display: block;
+            font-size: clamp(.94rem, 2.2vw, 1.1rem);
+            margin-bottom: .5rem;
         }
     </style>
     <div>
-        <h2>Giới thiệu nhân vật</h2>
+        <strong>Giới thiệu nhân vật</strong>
         <p>
             Kurumizawa Eri (18)<br>
-            ・Nữ sinh bỏ nhà đi trầm tính và có vấn đề về tâm lý.<br>
-            ・Cô ấy từng bị cha ruột bạo hành.<br>
+            ・Nữ sinh bỏ nhà đi, trầm tính, có vấn đề về tâm lý.<br>
+            ・Từng bị cha ruột bạo hành.<br>
             ・Từ trước đến nay chỉ từng quan hệ mà không có tình yêu.<br>
-            ・Cô ấy đã có nhiều bạn tình vì từng bị cha cưỡng hiếp và qua nhiều lần "sugar dating".<br>
-            ・Bình thường thì rất thoáng tính và thoải mái nhưng khi yêu, tình cảm của cô ấy rất sâu đậm.<br>
+            ・Đã qua nhiều bạn tình vì từng bị cha cưỡng hiếp và qua nhiều lần "sugar dating".<br>
+            ・Bình thường thì rất thoáng tính và thoải mái nhưng khi yêu tình cảm của cô ấy rất sâu đậm.<br>
         </p>
     </div>
     <hr>
     <div>
-        <h2>Ý tưởng chính</h2>
-        <p>
-            Sự đồi trụy x Sự phụ thuộc lẫn nhau x Sự sa đọa<br>
-            Cùng em nữ sinh trung học thỏa mãn cơ thể, cùng trở nên hư hỏng, sa đọa và phụ thuộc lẫn nhau.<br>
-            ※Ghi chú※
-            Khi nghe xong tác phẩm này, có thể bạn sẽ không bao giờ có thể sống thiếu cô bé này.
-        </p>
-    </div>
-    <hr>
-    <div>
-        <h2>Tóm tắt</h2>
-        <p>
-            Trong một ngày mưa.<br>
-            Là một người trưởng thành đang đi làm, bạn luôn cảm thấy chán nản về công việc hằng ngày.<br>
-            Cô bé ấy, một nữ sinh với cơ thể đầy vết tích xuất hiện trước mắt bạn.<br>
-            “Ne~e, anh trai... Nhặt em về đi mà”<br>
-            Bị mê hoặc bởi cơ thể cô bé, bạn dần sa ngã...<br>
-        </p>
-    </div>
-    <hr>
-    <div>
-        <h2>Danh sách track</h2>
-        ◆Tổng thời gian: 103 phút 38 giây<br>
+        <strong>Track list</strong>
         <p class="tracks">
             Track 1: Gặp gỡ với Eri trong mưa (Thời lượng: 6:33)<br>
             Track 2: Eri quan hệ tình dục với bạn để trả ơn (Thời lượng: 15:45)<br>
@@ -73,9 +58,4 @@
             Track 7: Cuộc sống chung sa đọa và phụ thuộc lẫn nhau (Thời lượng: 6:59)<br>
         </p>
     </div>
-
-    <script>
-        const tracks = document.querySelector('p.tracks');
-        const durations = tracks.innerHTML.split('<br>').map(line => line.split('g:')[1].slice(0, -1));
-    </script>
 </div>
