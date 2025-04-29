@@ -18,6 +18,14 @@ class Watch {
         Watch.buildVidDiv();
         Watch.buildContentDiv();
         Watch.buildCloseMenuAction();
+
+        fetch(`/descriptions/${Watch.track.code}/vi.html`)
+            .catch((e) => undefined)
+            .then(res => res.text())
+            .then(html => {
+                if (html.includes('desc-type'))
+                    document.getElementById('track-description').innerHTML = html
+            });
     }
 
     static buildVidDiv() {
@@ -25,18 +33,18 @@ class Watch {
         const trackInfoContainer = document.querySelector('#track-info');
         const trackInfoRowsHtml = [];
         const vidFrame = document.querySelector('#vid_frame');
-        
+
         vidFrame.src = `${window.location.href.includes('s2') ? '/s2' : ''}/watch/altplayer/?code=${code}`;
-        vidFrame.addEventListener('focus', function() {
+        vidFrame.addEventListener('focus', function () {
             document.addEventListener('touchmove', preventScroll, { passive: false });
         });
-        vidFrame.addEventListener('blur', function() {
+        vidFrame.addEventListener('blur', function () {
             document.removeEventListener('touchmove', preventScroll);
         });
         function preventScroll(e) {
-          e.preventDefault();
+            e.preventDefault();
         }
-      
+
         document.querySelector('#download-box a').href = `${window.location.href.includes('s2') ? '/s2' : ''}/watch/download/?code=${code}`;
         trackInfoRowsHtml.push(`
             <span id="track_name">${rjCode ? `<b>Search code: </b>${rjCode}` : ''}
@@ -81,7 +89,7 @@ class Watch {
             newTitle.innerHTML = `<h2>Random tracks by <a href="..?cv=${encodeURIComponent(cv)}"><span class="cv">${cv}</span></a></h2>`;
             newPostBox.classList.add('post-box');
             newPostBox.id = `CV - ${cv}`;
-            
+
             Watch.reuableElements.contentDiv.appendChild(newTitle);
             Watch.reuableElements.contentDiv.appendChild(newPostBox);
             cvRandomKeyList.forEach(keyList => {
