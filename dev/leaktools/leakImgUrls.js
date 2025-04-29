@@ -9,6 +9,7 @@ async function l(code){
       audios: []
     }
     let linkBox = document.querySelectorAll('.css-vurnku div[type="button"]');
+    console.log("Number of current assets:", linkBox.length);
     let linkNeed = [];
     for(let i=0; i<linkBox.length; i++) {
       if(linkBox[i].innerText.indexOf(code) != -1) {
