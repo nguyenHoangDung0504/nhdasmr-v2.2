@@ -48,7 +48,7 @@ class Utils {
         let currentLink = window.location.href;
         let url = new URL(currentLink);
         let queryParams = url.searchParams;
-        
+
         value = encodeURIComponent(value);
 
         if (queryParams.has(key)) {
@@ -60,7 +60,7 @@ class Utils {
         return url.toString();
     }
     static getFileNameFromUrl(url) {
-        return url.slice(url.lastIndexOf('/')+1, url.lastIndexOf('?'));
+        return url.slice(url.lastIndexOf('/') + 1, url.lastIndexOf('?'));
     }
     static shuffleArray(array) {
         let currentIndex = array.length;
@@ -97,17 +97,17 @@ class Utils {
     static standardizedTrackArrData(str) {
         return str.split(",")
             .filter((subStr) => subStr)
-            .map((subStr) => 
+            .map((subStr) =>
                 subStr.trim()
-                .replaceAll("”", '"')
-                .replaceAll("“", '"')
-                .replaceAll('’', "'")
+                    .replaceAll("”", '"')
+                    .replaceAll("“", '"')
+                    .replaceAll('’', "'")
             );
     }
     static filterUniqueObjects(arr) {
         const uniqueObjects = [];
         const set = new Set();
-        
+
         arr.forEach(obj => {
             const stringified = JSON.stringify(obj);
             if (!set.has(stringified)) {
@@ -115,16 +115,16 @@ class Utils {
                 uniqueObjects.push(obj);
             }
         });
-        
+
         return uniqueObjects;
     }
     static memoize(func) {
         const cache = {};
-        return function(...args) {
+        return function (...args) {
             const key = JSON.stringify(args);
             if (!(key in cache)) {
                 cache[key] = func.apply(this, args);
-                if(Config.log)
+                if (Config.log)
                     console.log(`%cCached result of: ${func.name}(${args.join(', ')})`, 'background: #222; color: #00BFFF; padding: 5px;');
             }
             return cache[key];
@@ -132,7 +132,7 @@ class Utils {
     }// Apply cache for functions
     static memoizeGetAndSearchMethods(...targets) {
         targets.forEach(target => {
-            const methodNames = Object.getOwnPropertyNames(target).filter(name => 
+            const methodNames = Object.getOwnPropertyNames(target).filter(name =>
                 !name.includes('Random')
                 && ['get', 'search'].some(keyword => name.includes(keyword))
                 && (typeof target[name]) === 'function'
@@ -144,19 +144,64 @@ class Utils {
     }// Apply cache for all function have 'get' or 'search'
 
     //Sort functions
-        static byName = (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        static byQuantity = (a, b) => a.quantity - b.quantity;
-        static sortSuggestionFn = (a, b) => {
-            const typeOrder = ["code", "rjCode", "cv", "tag", "series", "engName", "japName"];
-            const keywordIndexA = a.value.toString().toLowerCase().indexOf(a.keyword);
-            const keywordIndexB = b.value.toString().toLowerCase().indexOf(b.keyword);
-            if (keywordIndexA !== keywordIndexB) {
-                return keywordIndexA - keywordIndexB;
-            }
-            const typeComparison = typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type);
-            if (typeComparison !== 0) {
-                return typeComparison;
-            }
-            return a.value.toString().localeCompare(b.value.toString());
+    static byName = (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    static byQuantity = (a, b) => a.quantity - b.quantity;
+    static sortSuggestionFn = (a, b) => {
+        const typeOrder = ["code", "rjCode", "cv", "tag", "series", "engName", "japName"];
+        const keywordIndexA = a.value.toString().toLowerCase().indexOf(a.keyword);
+        const keywordIndexB = b.value.toString().toLowerCase().indexOf(b.keyword);
+        if (keywordIndexA !== keywordIndexB) {
+            return keywordIndexA - keywordIndexB;
         }
+        const typeComparison = typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type);
+        if (typeComparison !== 0) {
+            return typeComparison;
+        }
+        return a.value.toString().localeCompare(b.value.toString());
+    }
+}
+
+const WORKER_PATH = '/cache.worker.mjs';
+
+if ('serviceWorker' in navigator && window.location.href.includes('nhdasmr')) {
+    navigator.serviceWorker.getRegistration().then((registration) => {
+        if (registration) {
+            console.log('--> [CacheManager]: Service Worker already registered.');
+            return;
+        }
+
+        navigator.serviceWorker
+            .register(WORKER_PATH)
+            .then((reg) => {
+                console.log('--> [CacheManager]: Service Worker registered with scope:', reg.scope);
+                reg.addEventListener('message', (event) => {
+                    if (event.data.status === 'CACHE_CLEARED') {
+                        console.log('--> [CacheManager]: Cache has been cleared successfully.');
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('--> [CacheManager]: Service Worker registration failed:', error);
+            });
+    });
+}
+
+async function clearCache() {
+    const registration = await navigator.serviceWorker.ready;
+    if (registration.active) {
+        registration.active.postMessage({ type: 'CLEAR_CACHE' });
+        console.log('--> [CacheManager]: Cache clear request sent.');
+    } else {
+        console.warn('--> [CacheManager]: No active Service Worker to handle cache clearing.');
+    }
+}
+
+async function unregisterWorker() {
+    if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let registration of registrations) {
+            await registration.unregister();
+            console.log('--> [CacheManager]: Service Worker unregistered');
+        }
+    }
 }
