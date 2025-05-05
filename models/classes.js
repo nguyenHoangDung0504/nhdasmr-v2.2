@@ -443,6 +443,10 @@ class ImageDisplayer {
         return ctn;
     }
 }
+
+/*
+  thay đổi event pause với play
+*/
 class AudioController {
     constructor(src) {
         this.isDragging = false;
@@ -461,13 +465,14 @@ class AudioController {
         this.audio.dataset.isPause = true;
         this.audio.dataset.timeChange = 0;
 
-        this.audio.addEventListener('play', () => {
+        // this.audio.addEventListener('play', () => {
             this.audContainer.classList.add('playing');
-            this.audContainer.setAttribute('before', `Playing: ${this.filename}`);
+            // this.audContainer.setAttribute('before', `Playing: ${this.filename}`);
+            this.audContainer.setAttribute('before', this.filename); // New
             this.audio.dataset.isPause = false;
-        });
+        // });
 
-        this.audio.addEventListener('pause', () => {
+        this.audio.addEventListener('pause', () => {return; /**/
             this.audio.dataset.isPause = true;
             this.time = 3;
             const countdown = (time) => {
@@ -583,6 +588,22 @@ class AudioPlayer {
         this.audioElements = audioElements;
         this.track = track;
         this.currentAudioIndex = 0;
+        this.setupAutoNext();
+    }
+    setupAutoNext(stopWhenDone = true) {
+        this.audioElements.forEach((audio, index) => {
+            audio.addEventListener('ended', () => {
+                if (index === this.currentAudioIndex) {
+                    const isLast = this.currentAudioIndex === this.audioElements.length - 1;
+                    if (isLast && stopWhenDone) {
+                        // Dừng không phát nữa
+                        console.log('All tracks played.');
+                    } else {
+                        this.playNextTrack();
+                    }
+                }
+            });
+        });
     }
     playCurrentTrack() {
         this.audioElements[this.currentAudioIndex].play();

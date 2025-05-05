@@ -19,12 +19,18 @@ class Watch {
         Watch.buildContentDiv();
         Watch.buildCloseMenuAction();
 
-        fetch(`/descriptions/${Watch.track.code}/vi.html`)
-            .catch((e) => undefined)
+        fetch(`/descriptions/storage/${Watch.track.code}/vi.html`)
             .then(res => res.text())
             .then(html => {
+                const container = document.getElementById('track-description');
                 if (html.includes('desc-type'))
-                    document.getElementById('track-description').innerHTML = html
+                    container.innerHTML = '<summary>Descriptions</summary>' + html;
+
+                const scripts = container.querySelectorAll('script');
+                scripts.forEach(s => {
+                    container.removeChild(s);
+                    container.appendChild(Object.assign(document.createElement('script'), { src: s.src }))
+                });
             });
     }
 

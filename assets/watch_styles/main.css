@@ -146,3 +146,10 @@
 .hover:hover {
     text-decoration: underline;
 }
+
+#track-description > summary {
+    width: 100%;
+    cursor: pointer;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid white;
+}
