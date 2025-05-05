@@ -60,7 +60,7 @@ class Utils {
         return url.toString();
     }
     static getFileNameFromUrl(url) {
-        return url.slice(url.lastIndexOf('/') + 1, url.lastIndexOf('?'));
+        return decodeURIComponent(url.slice(url.lastIndexOf('/') + 1, url.includes('?') ? url.lastIndexOf('?') : url.length))
     }
     static shuffleArray(array) {
         let currentIndex = array.length;

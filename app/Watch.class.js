@@ -24,7 +24,7 @@ class Watch {
             .then(html => {
                 const container = document.getElementById('track-description');
                 if (html.includes('desc-type'))
-                    container.innerHTML = html;
+                    container.innerHTML = '<summary>Descriptions</summary>' + html;
 
                 const scripts = container.querySelectorAll('script');
                 scripts.forEach(s => {
