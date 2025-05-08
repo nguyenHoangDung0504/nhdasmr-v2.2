@@ -28,7 +28,8 @@ class Watch {
 
                 const scripts = container.querySelectorAll('script');
                 scripts.forEach(s => {
-                    container.removeChild(s);
+                    console.log(s);
+                    // container.removeChild(s);
                     container.appendChild(Object.assign(document.createElement('script'), { src: s.src }))
                 });
             });
