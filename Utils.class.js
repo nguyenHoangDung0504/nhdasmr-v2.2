@@ -77,7 +77,9 @@ class Utils {
         return array;
     }
     static highlight(text, highlightValue) {
-        let regexp = new RegExp(highlightValue, "i");
+        // Escape các ký tự đặc biệt trong RegExp
+        const escapedHighlightValue = highlightValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regexp = new RegExp(escapedHighlightValue, "i");
         return text.toString().replace(regexp, `<span class="highlight">$&</span>`);
     }
     static removeHighlight(text) {
