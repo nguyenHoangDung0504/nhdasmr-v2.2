@@ -4,20 +4,20 @@ const CACHE_EXPIRATION = time({ minutes: 10 });
 const LOG = true;
 
 const cacheTargets = buildCacheTargets`
-  -- External CSS
-  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css
-  
+	-- External CSS
+	https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css
+
 	-- Paths
-  /
+	/
 	/app/
 	/app/components/
-  /assets/alt_player_styles/
-  /assets/home_styles/
-  /assets/watch_styles/
-  /models/
+	/assets/alt_player_styles/
+	/assets/home_styles/
+	/assets/watch_styles/
+	/models/
 	/watch/
 	/watch/altplayer/
-  /descriptions/*
+	/descriptions/*
 `;
 
 /**
@@ -30,7 +30,7 @@ function buildCacheTargets(targets, ..._) {
 		.split('\n')
 		.map((line) => line.trim())
 		.filter(Boolean)
-    .filter(line => line && !line.startsWith('--'));
+		.filter((line) => line && !line.startsWith('--'));
 }
 
 function getFullCacheName() {
@@ -57,14 +57,14 @@ function time({ hours = 0, minutes = 0, seconds = 0 } = {}) {
  */
 function shouldCache(url) {
 	const { origin, pathname } = new URL(url);
-  
-  if (origin.startsWith('chrome-extension:')) return;
+
+	if (origin.startsWith('chrome-extension:')) return;
 
 	return cacheTargets.some((target) => {
 		// Nếu target là một URL cụ thể, kiểm tra khớp tuyệt đối
 		if (target.startsWith('http')) return url === target;
-    
-    // Nếu target là một đường dẫn kết thúc bằng /*, cache toàn bộ con/cháu
+
+		// Nếu target là một đường dẫn kết thúc bằng /*, cache toàn bộ con/cháu
 		if (target.endsWith('/*')) {
 			const basePath = target.slice(0, -2); // Bỏ /* đi
 			return pathname.startsWith(basePath);

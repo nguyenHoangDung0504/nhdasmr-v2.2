@@ -152,4 +152,5 @@
     cursor: pointer;
     padding-bottom: 1rem;
     border-bottom: 1px solid white;
+    font-size: clamp(.75rem, 2vw, 1rem);
 }

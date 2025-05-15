@@ -6,6 +6,11 @@ function findAndApplyAllContentElement() {
 }
 
 function applyInnerHTML(element) {
-    element.innerHTML = element.getAttribute('content').trim().replaceAll('\n', '<br>');
+    element.innerHTML = element
+          .getAttribute('content')
+          .trim()
+          .replaceAll('\n', '<br>') // Thay xuống dòng trước
+          .replace(/(?:https?:\/\/[^\s<]+)/g, (url) => `<a class="series" href="${url}" target="_blank">${url}</a>`);
+
     element.removeAttribute('content');
 }

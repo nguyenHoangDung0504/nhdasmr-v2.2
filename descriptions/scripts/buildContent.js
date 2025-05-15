@@ -24,7 +24,7 @@ function render(title, content) {
     return `
         <div>
             <strong>${title}</strong>
-            <p>${content.trim().replaceAll('\n', '<br>')}</p>
+            <p>${content.trim().replaceAll('\n', '<br>').replace(/https?:\/\/[^\s\n<]+/g, (url) => `<a class="series" href="${url}" target="_blank">${url}</a>`)}</p>
         </div>
     `;
 }
